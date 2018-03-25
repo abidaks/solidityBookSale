@@ -4,10 +4,10 @@ This repository contains simple code written in solidity for book sale
 
 ## Features of this solidity smart contract.
 
-After publishing you can sell book on etherum network
-You can set price/update price of book
-You can enable/disable the sale of book
-You can transfer the full or partial amount earned from this contract to your address
+* After publishing you can sell book on etherum network
+* You can set price/update price of book
+* You can enable/disable the sale of book
+* You can transfer the full or partial amount earned from this contract to your address
 
 ## Future Updates
 
