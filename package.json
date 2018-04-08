@@ -1,0 +1,26 @@
+{
+  "name": "solidityBookSale",
+  "version": "1.0.0",
+  "description": "This repository contains simple code written in solidity for book sale and web3.js code to interect with the smart contract once you published",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abidaks/solidityBookSale.git"
+  },
+  "keywords": [
+    "solidity",
+    "web3.js"
+  ],
+  "author": "Muhammad Abid <mohdabid.aks@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abidaks/solidityBookSale/issues"
+  },
+  "homepage": "https://github.com/abidaks/solidityBookSale#readme",
+  "dependencies": {
+    "web3": "github:ethereum/web3.js"
+  }
+}

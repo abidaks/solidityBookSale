@@ -1,19 +1,19 @@
 /*
-    Copyright 2017, Muhammad Abid
+	Copyright 2017, Muhammad Abid
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /// @title Book Sale Contract - Allows multiple parties to purchase a book
 /// @author Muhammad Abid - <mohdabid.aks@gmail.com>
@@ -24,15 +24,15 @@ import "./SafeMath.sol";
 
 contract BookSale {
 	using SafeMath for uint256;
-	//variables
-	address private owner;
-	uint256 private totalEarned;
-	uint256 private balance;
 	
-	uint256 public price;
-	bool public status;
+	address private owner; //Owner address of this contract
+	uint256 private totalEarned; //Save how much ether earned in this book sale smart contract
+	uint256 private balance; //Save how much ether is available to withdraw
 	
-	mapping(address => uint256) private Buyers;
+	uint256 public price; // Set price of the book
+	bool public status; // set status of this sale either active or paused.
+	
+	mapping(address => uint256) private Buyers; //saves all the buyers of this book
 	
 	/*
 		constructor of this contract, it will run once when contract created.
@@ -42,12 +42,12 @@ contract BookSale {
 		owner = msg.sender;
 		price = _price;
 		totalEarned = 0;
-		balance = msg.value;
+		balance = 0;
 		status = true;
 	}
 	
 	/*
-		Check if called by owner of the contract
+		Check if function is called by owner of the contract
 	*/
 	modifier onlyOwner(){
 		require(msg.sender == owner);
@@ -79,26 +79,7 @@ contract BookSale {
 	}
 	
 	/*
-		This function is used to get payments for buyers.
-		It checks if this book sale is active
-	*/
-	function buyBook() public payable isActive returns (bool){
-		require(msg.value >= price);
-		Buyers[msg.sender] = msg.value;
-		totalEarned = totalEarned.add(msg.value);
-		balance = balance.add(msg.value);
-		return true;
-	}
-	
-	/*
-		Default method
-	*/
-	function () public payable returns (bool){
-		return buyBook();
-	}
-	
-	/*
-		Transfer the full amount of this contract to caller address
+		Transfer the full amount of this contract to owner address
 		Only owner is allowed
 	*/
 	function transferFullAmount() public onlyOwner returns (bool){
@@ -109,7 +90,7 @@ contract BookSale {
 	}
 	
 	/*
-		Transfer the partial amount of this contract to caller address
+		Transfer the partial amount of this contract to owner address
 		Only owner is allowed
 	*/
 	function transferAmount(uint256 _amount) public onlyOwner returns (bool){
@@ -142,5 +123,35 @@ contract BookSale {
 			status = true;
 		}
 		return true;
+	}
+	
+	/*
+		This function is used to get payments for buyers.
+		It checks if this book sale is active
+	*/
+	function buyBook() public payable isActive returns (bool){
+		require(msg.value >= price);
+		Buyers[msg.sender] = msg.value;
+		totalEarned = totalEarned.add(msg.value);
+		balance = balance.add(msg.value);
+		return true;
+	}
+	
+	/*
+		Default method
+	*/
+	function () public payable{
+		buyBook();
+	}
+	
+	/*
+		This function checks if user already paid for the book.
+	
+	*/
+	function getUser() public view returns (bool){
+		if(Buyers[msg.sender] != 0){
+			return true;
+		}
+		return false;
 	}
 }
